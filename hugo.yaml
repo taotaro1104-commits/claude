@@ -26,6 +26,9 @@ menu:
     - name: "🚢 クルーズ"
       url: "/cruises/"
       weight: 40
+    - name: "🗾 国内観光"
+      url: "/japan/"
+      weight: 45
     - name: "💡 旅行ハック"
       url: "/tips/"
       weight: 50

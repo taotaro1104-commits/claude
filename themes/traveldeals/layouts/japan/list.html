@@ -1,0 +1,80 @@
+{{ define "main" }}
+{{ $site := .Site.Params }}
+
+<div class="container page-container japan-list-page">
+  <div class="content-layout">
+    <div class="main-content">
+
+      <header class="section-header japan-list-header">
+        <h1>{{ .Title }}</h1>
+        <p class="section-lead">{{ .Description }}</p>
+      </header>
+
+      {{/* 予約クイックリンク */}}
+      <div class="japan-list-cta">
+        <a href="https://hb.afl.rakuten.co.jp/hgc/{{ $site.rakuten_affiliate_id }}/?pc=https%3A%2F%2Ftravel.rakuten.co.jp%2F"
+           target="_blank" rel="nofollow noopener" class="btn btn-rakuten">
+          楽天トラベルで国内ホテルを予約する →
+        </a>
+        <a href="https://aviasales.com/?marker={{ $site.tp_marker }}&origin=TYO"
+           target="_blank" rel="nofollow noopener" class="btn btn-primary">
+          Aviasalesで格安航空券を探す →
+        </a>
+      </div>
+
+      {{/* 地方別フィルター */}}
+      <div class="region-filter-bar">
+        <button class="region-btn active" data-region="all">すべて</button>
+        {{ $regions := slice "北海道" "東北" "関東" "中部" "近畿" "中国" "四国" "九州" "沖縄" }}
+        {{ range $regions }}
+        <button class="region-btn" data-region="{{ . }}">{{ . }}</button>
+        {{ end }}
+      </div>
+
+      {{/* 都道府県グリッド */}}
+      <div class="prefecture-list-grid" id="prefGrid">
+        {{ range .Pages }}
+        {{ $region := .Params.region | default "" }}
+        <a href="{{ .RelPermalink }}" class="pref-list-card" data-region="{{ $region }}">
+          {{ if .Params.image_url }}
+          <div class="pref-card-img">
+            <img src="{{ .Params.image_url }}" alt="{{ .Params.prefecture }}" loading="lazy">
+          </div>
+          {{ end }}
+          <div class="pref-card-body">
+            <div class="pref-card-badges">
+              <span class="badge badge-region">{{ $region }}</span>
+              {{ range first 3 .Params.themes }}<span class="badge badge-theme">{{ . }}</span>{{ end }}
+            </div>
+            <h2 class="pref-card-title">{{ .Params.prefecture }}</h2>
+            <p class="pref-card-lead">{{ .Description }}</p>
+            <div class="pref-card-meta">
+              <span>{{ .Params.days }}</span>
+            </div>
+          </div>
+        </a>
+        {{ end }}
+      </div>
+
+    </div>
+    {{ partial "affiliate-sidebar.html" . }}
+  </div>
+</div>
+
+<script>
+(function() {
+  const btns = document.querySelectorAll('.region-btn');
+  const cards = document.querySelectorAll('.pref-list-card');
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const region = btn.dataset.region;
+      cards.forEach(card => {
+        card.style.display = (region === 'all' || card.dataset.region === region) ? '' : 'none';
+      });
+    });
+  });
+})();
+</script>
+{{ end }}

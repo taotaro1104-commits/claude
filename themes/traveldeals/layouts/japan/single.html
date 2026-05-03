@@ -1,0 +1,181 @@
+{{ define "main" }}
+{{ $p := .Params }}
+{{ $site := .Site.Params }}
+
+<div class="container page-container japan-page">
+  <div class="content-layout">
+    <article class="main-content">
+
+      {{/* ヒーローヘッダー */}}
+      <header class="japan-hero">
+        {{ if $p.image_url }}
+        <div class="japan-hero-image">
+          <img src="{{ $p.image_url }}" alt="{{ $p.prefecture }}の観光イメージ：{{ $p.image_title }}" loading="eager">
+          <div class="hero-image-credit">
+            {{ $p.image_title }} / {{ $p.image_artist }} / {{ $p.image_license }}
+          </div>
+        </div>
+        {{ end }}
+        <div class="japan-hero-body">
+          <div class="prefecture-badges">
+            <span class="badge badge-region">{{ $p.region }}</span>
+            {{ range $p.themes }}<span class="badge badge-theme">{{ . }}</span>{{ end }}
+          </div>
+          <h1 class="article-title">{{ .Title }}</h1>
+          <p class="article-lead">{{ .Description }}</p>
+          <div class="pref-meta">
+            <span class="meta-item">📅 {{ $p.days }}</span>
+            <span class="meta-item">🌸 {{ delimit $p.seasons "・" }}</span>
+            <span class="meta-item">✈ {{ $p.airport }}</span>
+          </div>
+        </div>
+      </header>
+
+      {{/* 航空券・ホテル クイックリンク */}}
+      <div class="japan-quick-links">
+        <h2 class="section-title-sm">{{ $p.prefecture }}への旅行を予約する</h2>
+        <div class="quick-links-grid">
+          <a href="https://aviasales.com/?marker={{ $site.tp_marker }}&origin=TYO&destination={{ $p.airport }}"
+             target="_blank" rel="nofollow noopener" class="quick-link-card ql-flight">
+            <span class="ql-icon">✈</span>
+            <div>
+              <strong>東京→{{ $p.prefecture }}の航空券</strong>
+              <small>Aviasalesで最安値検索</small>
+            </div>
+            <span class="ql-arrow">→</span>
+          </a>
+          <a href="https://www.skyscanner.jp/flights/tyo/{{ $p.airport | lower }}/"
+             target="_blank" rel="nofollow noopener" class="quick-link-card ql-skyscanner">
+            <span class="ql-icon">🔍</span>
+            <div>
+              <strong>Skyscannerで比較</strong>
+              <small>1000社以上を一括検索</small>
+            </div>
+            <span class="ql-arrow">→</span>
+          </a>
+          <a href="https://hb.afl.rakuten.co.jp/hgc/{{ $site.rakuten_affiliate_id }}/?pc=https%3A%2F%2Ftravel.rakuten.co.jp%2Fdomestic%2Fsearch%2F%3FkeyWord%3D{{ $p.prefecture | urlquery }}"
+             target="_blank" rel="nofollow noopener" class="quick-link-card ql-rakuten">
+            <span class="ql-icon">🏨</span>
+            <div>
+              <strong>{{ $p.prefecture }}のホテル</strong>
+              <small>楽天トラベルでポイント貯まる</small>
+            </div>
+            <span class="ql-arrow">→</span>
+          </a>
+          <a href="https://www.booking.com/searchresults/ja.html?ss={{ $p.prefecture | urlquery }}&aid={{ $site.booking_aid }}"
+             target="_blank" rel="nofollow noopener" class="quick-link-card ql-booking">
+            <span class="ql-icon">🌐</span>
+            <div>
+              <strong>Booking.com</strong>
+              <small>無料キャンセル多数</small>
+            </div>
+            <span class="ql-arrow">→</span>
+          </a>
+          <a href="https://www.agoda.com/ja-jp/search?city={{ $p.prefecture | urlquery }}&cid={{ $site.agoda_cid }}"
+             target="_blank" rel="nofollow noopener" class="quick-link-card ql-agoda">
+            <span class="ql-icon">🌏</span>
+            <div>
+              <strong>Agoda</strong>
+              <small>アジアに強い最安値</small>
+            </div>
+            <span class="ql-arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      {{/* 記事本文（基本情報テーブルなど） */}}
+      <div class="article-body">
+        {{ .Content }}
+      </div>
+
+      {{/* 10コース */}}
+      <section class="courses-section">
+        <h2 class="section-title">{{ $p.prefecture }} 観光モデルコース10選</h2>
+        <div class="courses-grid">
+          {{ range $i, $c := $p.courses }}
+          <div class="course-card" id="course-{{ $c.id }}">
+            <div class="course-header">
+              <span class="course-number">コース{{ add $i 1 }}</span>
+              <span class="course-label">{{ $c.label }}</span>
+            </div>
+            <h3 class="course-title">{{ $c.title }}</h3>
+            <p class="course-summary">{{ $c.summary }}</p>
+
+            <div class="course-steps">
+              <h4>モデル行程</h4>
+              <ol class="steps-list">
+                {{ range $c.steps }}<li>{{ . }}</li>{{ end }}
+              </ol>
+            </div>
+
+            <div class="course-tips">
+              <div class="tip-item">
+                <span class="tip-icon">💡</span>
+                <p>{{ $c.point }}</p>
+              </div>
+              <div class="tip-item">
+                <span class="tip-icon">🚃</span>
+                <p>{{ $c.transport }}</p>
+              </div>
+              <div class="tip-item">
+                <span class="tip-icon">🏨</span>
+                <p>{{ $c.lodging }}</p>
+              </div>
+            </div>
+
+            <div class="course-cta">
+              <a href="https://hb.afl.rakuten.co.jp/hgc/{{ $site.rakuten_affiliate_id }}/?pc=https%3A%2F%2Ftravel.rakuten.co.jp%2Fdomestic%2Fsearch%2F%3FkeyWord%3D{{ $p.prefecture | urlquery }}"
+                 target="_blank" rel="nofollow noopener" class="btn btn-rakuten btn-sm">
+                このコースのホテルを楽天で探す →
+              </a>
+            </div>
+          </div>
+          {{ end }}
+        </div>
+      </section>
+
+      {{/* エリア別ホテル・航空券まとめ */}}
+      <section class="japan-affiliate-section">
+        <h2 class="section-title">{{ $p.prefecture }}の旅行予約まとめ</h2>
+        <div class="affiliate-cards-grid">
+          <div class="aff-card">
+            <h3>✈ 航空券</h3>
+            <p>東京（TYO）発→{{ $p.airport }}着の最安値を比較</p>
+            <a href="https://aviasales.com/?marker={{ $site.tp_marker }}&origin=TYO&destination={{ $p.airport }}"
+               target="_blank" rel="nofollow noopener" class="btn btn-primary">Aviasalesで検索</a>
+            <a href="https://www.skyscanner.jp/flights/tyo/{{ $p.airport | lower }}/"
+               target="_blank" rel="nofollow noopener" class="btn btn-skyscanner">Skyscanner</a>
+          </div>
+          <div class="aff-card">
+            <h3>🏨 ホテル・旅館</h3>
+            <p>{{ delimit $p.areas "・" }}のホテルを比較予約</p>
+            <a href="https://hb.afl.rakuten.co.jp/hgc/{{ $site.rakuten_affiliate_id }}/?pc=https%3A%2F%2Ftravel.rakuten.co.jp%2Fdomestic%2Fsearch%2F%3FkeyWord%3D{{ $p.prefecture | urlquery }}"
+               target="_blank" rel="nofollow noopener" class="btn btn-rakuten">楽天トラベル（ポイント）</a>
+            <a href="https://www.booking.com/searchresults/ja.html?ss={{ $p.prefecture | urlquery }}&aid={{ $site.booking_aid }}"
+               target="_blank" rel="nofollow noopener" class="btn btn-booking">Booking.com</a>
+            <a href="https://www.agoda.com/ja-jp/search?city={{ $p.prefecture | urlquery }}&cid={{ $site.agoda_cid }}"
+               target="_blank" rel="nofollow noopener" class="btn btn-agoda">Agoda</a>
+          </div>
+        </div>
+      </section>
+
+      {{/* ページナビ：前/次 都道府県 */}}
+      <nav class="prefecture-nav">
+        {{ with .PrevInSection }}
+        <a href="{{ .RelPermalink }}" class="pref-nav-link pref-nav-prev">
+          ← {{ .Params.prefecture }}
+        </a>
+        {{ end }}
+        <a href="{{ "/japan/" | relURL }}" class="pref-nav-link pref-nav-index">一覧に戻る</a>
+        {{ with .NextInSection }}
+        <a href="{{ .RelPermalink }}" class="pref-nav-link pref-nav-next">
+          {{ .Params.prefecture }} →
+        </a>
+        {{ end }}
+      </nav>
+
+    </article>
+    {{ partial "affiliate-sidebar.html" . }}
+  </div>
+</div>
+{{ end }}
