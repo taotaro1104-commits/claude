@@ -18,21 +18,31 @@ jobs:
         run: |
           mkdir -p data/prices
 
+          fetch_price() {
+            local url="$1"
+            local out="$2"
+            local tmp=$(mktemp)
+            curl -sf "$url" -o "$tmp" || true
+            # 有効なJSONのみ保存、それ以外はフォールバック
+            if jq empty "$tmp" 2>/dev/null && jq -e '.success == true' "$tmp" > /dev/null 2>&1; then
+              cp "$tmp" "$out"
+            else
+              echo '{"success":true,"data":{}}' > "$out"
+            fi
+            rm -f "$tmp"
+          }
+
           # 東京→ソウル 最安値
-          curl -s "https://api.travelpayouts.com/v1/prices/cheap?origin=TYO&destination=ICN&currency=jpy&token=${TP_TOKEN}" \
-            -o data/prices/tyo-icn.json
+          fetch_price "https://api.travelpayouts.com/v1/prices/cheap?origin=TYO&destination=ICN&currency=jpy&token=${TP_TOKEN}" data/prices/tyo-icn.json
 
           # 東京→台北 最安値
-          curl -s "https://api.travelpayouts.com/v1/prices/cheap?origin=TYO&destination=TPE&currency=jpy&token=${TP_TOKEN}" \
-            -o data/prices/tyo-tpe.json
+          fetch_price "https://api.travelpayouts.com/v1/prices/cheap?origin=TYO&destination=TPE&currency=jpy&token=${TP_TOKEN}" data/prices/tyo-tpe.json
 
           # 東京→バンコク 最安値
-          curl -s "https://api.travelpayouts.com/v1/prices/cheap?origin=TYO&destination=BKK&currency=jpy&token=${TP_TOKEN}" \
-            -o data/prices/tyo-bkk.json
+          fetch_price "https://api.travelpayouts.com/v1/prices/cheap?origin=TYO&destination=BKK&currency=jpy&token=${TP_TOKEN}" data/prices/tyo-bkk.json
 
           # 東京→ホノルル 最安値
-          curl -s "https://api.travelpayouts.com/v1/prices/cheap?origin=TYO&destination=HNL&currency=jpy&token=${TP_TOKEN}" \
-            -o data/prices/tyo-hnl.json
+          fetch_price "https://api.travelpayouts.com/v1/prices/cheap?origin=TYO&destination=HNL&currency=jpy&token=${TP_TOKEN}" data/prices/tyo-hnl.json
 
           # 最終更新日時を記録
           echo "{\"updated_at\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" > data/prices/meta.json
