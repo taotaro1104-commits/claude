@@ -1,0 +1,43 @@
+baseURL: "https://travel.matchinfo-rank.com/"
+languageCode: "ja"
+title: "旅行お得情報まとめ"
+theme: "traveldeals"
+
+params:
+  description: "航空券・ホテル・フェリー・クルーズの格安情報とお得な予約方法をまとめた旅行情報サイト。アフィリエイトリンクで最安値を探せます。"
+  author: "旅行お得情報まとめ"
+  tp_marker: "612192"
+  booking_aid: "304142"
+  agoda_cid: "1922886"
+  rakuten_app_id: "1026490176036004250"
+  rakuten_affiliate_id: "1e8ab1d9.61935ba1.1e8ab1da.b88ebb13"
+
+menu:
+  main:
+    - name: "✈ 航空券"
+      url: "/flights/"
+      weight: 10
+    - name: "🏨 宿泊"
+      url: "/hotels/"
+      weight: 20
+    - name: "⛴ フェリー"
+      url: "/ferries/"
+      weight: 30
+    - name: "🚢 クルーズ"
+      url: "/cruises/"
+      weight: 40
+    - name: "💡 旅行ハック"
+      url: "/tips/"
+      weight: 50
+
+taxonomies:
+  category: "categories"
+  tag: "tags"
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+pagination:
+  pagerSize: 12

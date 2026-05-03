@@ -1,0 +1,8 @@
+{{/* Rakutenデータがない場合のフォールバック表示 */}}
+<div class="rakuten-fallback">
+  <p>🔍 {{ .city }}の人気ホテルを楽天トラベルで検索</p>
+  <a href="https://hb.afl.rakuten.co.jp/hgc/{{ site.Params.rakuten_affiliate_id }}/?pc=https%3A%2F%2Ftravel.rakuten.co.jp%2Fsearch%2F%3Ff_keyword%3D{{ .keyword }}"
+     target="_blank" rel="nofollow noopener" class="btn btn-rakuten">
+    楽天トラベルで{{ .city }}のホテルを探す →
+  </a>
+</div>

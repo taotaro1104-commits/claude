@@ -1,0 +1,35 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>旅行お得情報まとめ</h3>
+        <p>航空券・宿泊・フェリー・クルーズのお得情報をまとめています。アフィリエイトリンクを通じてサイトを運営しています。</p>
+      </div>
+      <div class="footer-col">
+        <h4>カテゴリー</h4>
+        <ul>
+          <li><a href="{{ "/flights/" | relURL }}">✈ 格安航空券</a></li>
+          <li><a href="{{ "/hotels/" | relURL }}">🏨 格安ホテル</a></li>
+          <li><a href="{{ "/ferries/" | relURL }}">⛴ フェリー情報</a></li>
+          <li><a href="{{ "/cruises/" | relURL }}">🚢 クルーズ旅行</a></li>
+          <li><a href="{{ "/tips/" | relURL }}">💡 旅行ハック</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>おすすめサービス</h4>
+        <ul>
+          <li><a href="https://tp.media/click?shmarker={{ .Site.Params.tp_marker }}&promo_id=4132&source_type=topframe&type=click&campaign_id=121" target="_blank" rel="nofollow noopener">Travelpayouts</a></li>
+          <li><a href="https://www.booking.com/?aid={{ .Site.Params.booking_aid }}" target="_blank" rel="nofollow noopener">Booking.com</a></li>
+          <li><a href="https://www.skyscanner.jp/" target="_blank" rel="nofollow noopener">Skyscanner</a></li>
+          <li><a href="https://www.agoda.com/?cid={{ .Site.Params.agoda_cid }}" target="_blank" rel="nofollow noopener">Agoda</a></li>
+          <li><a href="https://www.expedia.co.jp/" target="_blank" rel="nofollow noopener">Expedia</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="affiliate-disclosure">※ 本サイトはアフィリエイト広告を利用しています。記事内のリンクから予約・購入いただくと、サイト運営費の一部をいただく場合があります。</p>
+      <p>&copy; {{ now.Year }} 旅行お得情報まとめ. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+<script src="{{ "js/main.js" | relURL }}"></script>

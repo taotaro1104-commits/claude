@@ -1,0 +1,60 @@
+{{/* アフィリエイトサイドバー */}}
+<aside class="affiliate-sidebar">
+  <div class="sidebar-widget">
+    <h3 class="widget-title">✈ 今すぐ航空券を検索</h3>
+    <div class="search-widget">
+      <a href="https://aviasales.com/?marker={{ .Site.Params.tp_marker }}&amp;origin=TYO" target="_blank" rel="nofollow noopener" class="btn btn-primary btn-full">
+        Aviasalesで格安航空券を探す
+      </a>
+      <a href="https://www.skyscanner.jp/" target="_blank" rel="nofollow noopener" class="btn btn-skyscanner btn-full">
+        Skyscannerで比較検索
+      </a>
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+    <h3 class="widget-title">🏨 ホテルを予約する</h3>
+    <div class="search-widget">
+      <a href="https://hb.afl.rakuten.co.jp/hgc/{{ .Site.Params.rakuten_affiliate_id }}/?pc=https%3A%2F%2Ftravel.rakuten.co.jp%2F"
+         target="_blank" rel="nofollow noopener" class="btn btn-rakuten btn-full">
+        楽天トラベルで予約（ポイント貯まる）
+      </a>
+      <a href="https://www.booking.com/?aid={{ .Site.Params.booking_aid }}" target="_blank" rel="nofollow noopener" class="btn btn-booking btn-full">
+        Booking.comで予約
+      </a>
+      <a href="https://www.agoda.com/?cid={{ .Site.Params.agoda_cid }}" target="_blank" rel="nofollow noopener" class="btn btn-agoda btn-full">
+        Agodaで予約（アジア最安）
+      </a>
+      <a href="https://www.expedia.co.jp/" target="_blank" rel="nofollow noopener" class="btn btn-expedia btn-full">
+        Expediaで予約
+      </a>
+    </div>
+  </div>
+
+  <div class="sidebar-widget rakuten-point-widget">
+    <h3 class="widget-title">🎯 楽天ポイント活用</h3>
+    <p class="widget-desc">楽天カード決済でさらにポイントUP！SPU対象でポイント最大16倍獲得。</p>
+    <a href="https://hb.afl.rakuten.co.jp/hgc/{{ .Site.Params.rakuten_affiliate_id }}/?pc=https%3A%2F%2Ftravel.rakuten.co.jp%2F"
+       target="_blank" rel="nofollow noopener" class="btn btn-rakuten btn-full">
+      楽天トラベルを見る →
+    </a>
+  </div>
+
+  <div class="sidebar-widget">
+    <h3 class="widget-title">🚢 フェリー・クルーズ</h3>
+    <div class="search-widget">
+      <a href="https://www.ferryhopper.com/" target="_blank" rel="nofollow noopener" class="btn btn-ferry btn-full">
+        Ferryhopper（欧州フェリー）
+      </a>
+      <a href="https://www.cruisecritic.com/" target="_blank" rel="nofollow noopener" class="btn btn-cruise btn-full">
+        Cruise Criticで比較
+      </a>
+    </div>
+  </div>
+
+  <div class="sidebar-widget affiliate-notice">
+    <p>💰 <strong>マイル・ポイント活用</strong></p>
+    <p>クレジットカードのポイントで特典航空券をゲット！</p>
+    <a href="{{ "/tips/miles-points/" | relURL }}" class="btn btn-outline btn-full">活用方法を見る →</a>
+  </div>
+</aside>

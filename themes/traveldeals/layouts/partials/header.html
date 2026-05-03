@@ -1,0 +1,18 @@
+<header class="site-header">
+  <div class="container">
+    <a class="site-logo" href="{{ "/" | relURL }}">
+      <span class="logo-icon">✈</span>
+      <span class="logo-text">{{ .Site.Title }}</span>
+    </a>
+    <nav class="main-nav">
+      <button class="nav-toggle" aria-label="メニュー">☰</button>
+      <ul class="nav-list">
+        <li><a href="{{ "/flights/" | relURL }}">✈ 航空券</a></li>
+        <li><a href="{{ "/hotels/" | relURL }}">🏨 宿泊</a></li>
+        <li><a href="{{ "/ferries/" | relURL }}">⛴ フェリー</a></li>
+        <li><a href="{{ "/cruises/" | relURL }}">🚢 クルーズ</a></li>
+        <li><a href="{{ "/tips/" | relURL }}">💡 旅行ハック</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>

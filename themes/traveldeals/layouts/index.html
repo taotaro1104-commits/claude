@@ -1,0 +1,242 @@
+{{ define "main" }}
+
+{{/* ヒーローセクション */}}
+<section class="hero">
+  <div class="container">
+    <h1 class="hero-title">旅行のお得情報まとめ</h1>
+    <p class="hero-subtitle">航空券・ホテル・フェリー・クルーズの格安情報とアフィリエイトリンクを網羅</p>
+    <div class="hero-search">
+      <div class="search-tabs">
+        <button class="tab-btn active" data-tab="flights">✈ 航空券</button>
+        <button class="tab-btn" data-tab="hotels">🏨 ホテル</button>
+        <button class="tab-btn" data-tab="rakuten">🎯 楽天トラベル</button>
+        <button class="tab-btn" data-tab="ferries">⛴ フェリー</button>
+      </div>
+      <div class="tab-content active" id="tab-flights">
+        <a href="https://aviasales.com/?marker={{ .Site.Params.tp_marker }}&origin=TYO" target="_blank" rel="nofollow noopener" class="btn btn-hero">
+          Aviasalesで格安航空券を検索する →
+        </a>
+        <a href="https://www.skyscanner.jp/" target="_blank" rel="nofollow noopener" class="btn btn-hero-outline">
+          Skyscannerで比較する
+        </a>
+      </div>
+      <div class="tab-content" id="tab-hotels">
+        <a href="https://www.booking.com/?aid={{ .Site.Params.booking_aid }}" target="_blank" rel="nofollow noopener" class="btn btn-hero">
+          Booking.comで今すぐ検索 →
+        </a>
+        <a href="https://www.agoda.com/?cid={{ .Site.Params.agoda_cid }}" target="_blank" rel="nofollow noopener" class="btn btn-hero-outline">
+          Agodaでアジアの格安ホテル
+        </a>
+      </div>
+      <div class="tab-content" id="tab-rakuten">
+        <a href="https://hb.afl.rakuten.co.jp/hgc/{{ .Site.Params.rakuten_affiliate_id }}/?pc=https%3A%2F%2Ftravel.rakuten.co.jp%2F"
+           target="_blank" rel="nofollow noopener" class="btn btn-hero btn-rakuten-hero">
+          楽天トラベルで国内ホテルを探す →
+        </a>
+        <a href="https://hb.afl.rakuten.co.jp/hgc/{{ .Site.Params.rakuten_affiliate_id }}/?pc=https%3A%2F%2Ftravel.rakuten.co.jp%2Fflight%2F"
+           target="_blank" rel="nofollow noopener" class="btn btn-hero-outline">
+          楽天トラベルで航空券を比較
+        </a>
+      </div>
+      <div class="tab-content" id="tab-ferries">
+        <a href="https://www.ferryhopper.com/" target="_blank" rel="nofollow noopener" class="btn btn-hero">
+          Ferryhopperでフェリーを探す →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{/* 統計バナー */}}
+<section class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-number">100+</span>
+        <span class="stat-label">提携旅行ブランド</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">最大70%</span>
+        <span class="stat-label">早割で節約可能</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">毎日更新</span>
+        <span class="stat-label">価格情報</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">無料</span>
+        <span class="stat-label">価格アラート設定</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{/* カテゴリーカード */}}
+<section class="categories-section">
+  <div class="container">
+    <h2 class="section-title">カテゴリーから探す</h2>
+    <div class="category-grid">
+      <a href="{{ "/flights/" | relURL }}" class="category-card category-flights">
+        <div class="category-icon">✈</div>
+        <h3>格安航空券</h3>
+        <p>国内・海外の格安フライト情報。価格アラートの使い方も解説。</p>
+        <span class="category-link">記事を見る →</span>
+      </a>
+      <a href="{{ "/hotels/" | relURL }}" class="category-card category-hotels">
+        <div class="category-icon">🏨</div>
+        <h3>格安ホテル・宿泊</h3>
+        <p>Booking.com・Agoda・楽天トラベルの比較。最安値を見つけるコツ。</p>
+        <span class="category-link">記事を見る →</span>
+      </a>
+      <a href="{{ "/ferries/" | relURL }}" class="category-card category-ferries">
+        <div class="category-icon">⛴</div>
+        <h3>フェリー・航路情報</h3>
+        <p>国内・海外のフェリー情報。Ferryhopperで欧州フェリーも比較。</p>
+        <span class="category-link">記事を見る →</span>
+      </a>
+      <a href="{{ "/cruises/" | relURL }}" class="category-card category-cruises">
+        <div class="category-icon">🚢</div>
+        <h3>クルーズ旅行</h3>
+        <p>Royal Caribbean・MSCなど人気クルーズの最安値情報。</p>
+        <span class="category-link">記事を見る →</span>
+      </a>
+      <a href="{{ "/tips/" | relURL }}" class="category-card category-tips">
+        <div class="category-icon">💡</div>
+        <h3>旅行ハック・節約術</h3>
+        <p>マイル・ポイント活用法、特典航空券の取り方など旅行の裏技。</p>
+        <span class="category-link">記事を見る →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{{/* Skyscanner 埋め込みウィジェット */}}
+{{ partial "skyscanner-widget.html" . }}
+
+{{/* 楽天トラベル ホテルセクション */}}
+{{ partial "rakuten-hotels.html" . }}
+
+{{/* 最新記事 */}}
+<section class="latest-articles">
+  <div class="container">
+    <h2 class="section-title">最新のお得情報</h2>
+    <div class="article-grid">
+      {{ $pages := where .Site.RegularPages "Type" "ne" "page" }}
+      {{ range first 6 $pages }}
+      <article class="article-card">
+        <a href="{{ .RelPermalink }}">
+          <div class="card-image-placeholder" style="background: {{ with .Params.color }}{{ . }}{{ else }}linear-gradient(135deg, #667eea 0%, #764ba2 100%){{ end }}">
+            <span class="card-icon">{{ with .Params.icon }}{{ . }}{{ else }}✈{{ end }}</span>
+          </div>
+          <div class="card-body">
+            {{ with .Params.category }}<span class="category-badge">{{ . }}</span>{{ end }}
+            <h3 class="card-title">{{ .Title }}</h3>
+            {{ with .Description }}<p class="card-excerpt">{{ . }}</p>{{ end }}
+            <div class="card-meta">
+              <time>{{ .Date.Format "2006年01月02日" }}</time>
+              {{ with .Params.price_from }}<span class="price-tag">最安 ¥{{ . }}</span>{{ end }}
+            </div>
+          </div>
+        </a>
+      </article>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+{{/* アフィリエイトバナーセクション */}}
+<section class="affiliate-section">
+  <div class="container">
+    <h2 class="section-title">おすすめ予約サービス</h2>
+    <div class="service-grid service-grid-5">
+      <div class="service-card">
+        <div class="service-header service-booking">
+          <span class="service-logo">Booking</span>
+          <span class="service-tagline">.com</span>
+        </div>
+        <div class="service-body">
+          <h3>Booking.com</h3>
+          <ul>
+            <li>世界最大のホテル予約サイト</li>
+            <li>多くの宿が無料キャンセル可</li>
+            <li>ジーニアスメンバーは最大25%OFF</li>
+          </ul>
+          <a href="https://www.booking.com/?aid={{ .Site.Params.booking_aid }}" target="_blank" rel="nofollow noopener" class="btn btn-booking">
+            Booking.comで予約する →
+          </a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-header service-agoda">
+          <span class="service-logo">agoda</span>
+        </div>
+        <div class="service-body">
+          <h3>Agoda</h3>
+          <ul>
+            <li>アジア圏で特に強い予約サイト</li>
+            <li>日本語サポート対応</li>
+            <li>早割で最大60%OFF</li>
+          </ul>
+          <a href="https://www.agoda.com/?cid={{ .Site.Params.agoda_cid }}" target="_blank" rel="nofollow noopener" class="btn btn-agoda">
+            Agodaで予約する →
+          </a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-header service-rakuten">
+          <span class="service-logo">楽天トラベル</span>
+        </div>
+        <div class="service-body">
+          <h3>楽天トラベル</h3>
+          <ul>
+            <li>国内ホテル・旅館の最大手</li>
+            <li>楽天ポイントが貯まる・使える</li>
+            <li>SPU対象でポイント最大16倍</li>
+          </ul>
+          <a href="https://hb.afl.rakuten.co.jp/hgc/{{ .Site.Params.rakuten_affiliate_id }}/?pc=https%3A%2F%2Ftravel.rakuten.co.jp%2F"
+             target="_blank" rel="nofollow noopener" class="btn btn-rakuten">
+            楽天トラベルで予約する →
+          </a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-header service-skyscanner">
+          <span class="service-logo">✈ Skyscanner</span>
+        </div>
+        <div class="service-body">
+          <h3>Skyscanner</h3>
+          <ul>
+            <li>1,000以上の航空会社を比較</li>
+            <li>「最安月」機能で最安値月がわかる</li>
+            <li>価格アラートで値下がりを通知</li>
+          </ul>
+          <a href="https://www.skyscanner.jp/" target="_blank" rel="nofollow noopener" class="btn btn-skyscanner">
+            Skyscannerで検索する →
+          </a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-header service-travelpayouts">
+          <span class="service-logo">Travelpayouts</span>
+        </div>
+        <div class="service-body">
+          <h3>Travelpayouts</h3>
+          <ul>
+            <li>旅行特化のアフィリエイトネットワーク</li>
+            <li>100以上の旅行ブランドと提携</li>
+            <li>Data APIで価格データ取得可能</li>
+          </ul>
+          <a href="https://www.travelpayouts.com/en/?marker={{ .Site.Params.tp_marker }}" target="_blank" rel="nofollow noopener" class="btn btn-tp">
+            Travelpayoutsを見る →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{ end }}

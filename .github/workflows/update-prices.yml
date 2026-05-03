@@ -1,0 +1,141 @@
+name: Update Travel Prices
+
+on:
+  schedule:
+    # 毎日AM6:00（JST）に実行
+    - cron: "0 21 * * *"
+  workflow_dispatch:
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch Travelpayouts flight prices
+        env:
+          TP_TOKEN: ${{ secrets.TRAVELPAYOUTS_TOKEN }}
+        run: |
+          mkdir -p data/prices
+
+          # 東京→ソウル 最安値
+          curl -s "https://api.travelpayouts.com/v1/prices/cheap?origin=TYO&destination=ICN&currency=jpy&token=${TP_TOKEN}" \
+            -o data/prices/tyo-icn.json
+
+          # 東京→台北 最安値
+          curl -s "https://api.travelpayouts.com/v1/prices/cheap?origin=TYO&destination=TPE&currency=jpy&token=${TP_TOKEN}" \
+            -o data/prices/tyo-tpe.json
+
+          # 東京→バンコク 最安値
+          curl -s "https://api.travelpayouts.com/v1/prices/cheap?origin=TYO&destination=BKK&currency=jpy&token=${TP_TOKEN}" \
+            -o data/prices/tyo-bkk.json
+
+          # 東京→ホノルル 最安値
+          curl -s "https://api.travelpayouts.com/v1/prices/cheap?origin=TYO&destination=HNL&currency=jpy&token=${TP_TOKEN}" \
+            -o data/prices/tyo-hnl.json
+
+          # 最終更新日時を記録
+          echo "{\"updated_at\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" > data/prices/meta.json
+
+      - name: Fetch Rakuten Travel hotel deals
+        env:
+          RAKUTEN_APP_ID: ${{ secrets.RAKUTEN_APP_ID }}
+          RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
+        run: |
+          mkdir -p data/rakuten
+
+          # 東京の格安ホテル（レビュー評価順）
+          curl -s "https://app.rakuten.co.jp/services/api/Travel/SimpleHotelSearch/20170426?applicationId=${RAKUTEN_APP_ID}&affiliateId=${RAKUTEN_AFFILIATE_ID}&format=json&datumType=1&checkinDate=$(date -d '+1 day' +%Y-%m-%d)&checkoutDate=$(date -d '+2 days' +%Y-%m-%d)&adultNum=2&hits=6&page=1&sort=-reviewAverage&keyword=%E6%9D%B1%E4%BA%AC&responseType=small" \
+            -o data/rakuten/hotels-tokyo-raw.json
+
+          # 大阪の格安ホテル（レビュー評価順）
+          curl -s "https://app.rakuten.co.jp/services/api/Travel/SimpleHotelSearch/20170426?applicationId=${RAKUTEN_APP_ID}&affiliateId=${RAKUTEN_AFFILIATE_ID}&format=json&datumType=1&checkinDate=$(date -d '+1 day' +%Y-%m-%d)&checkoutDate=$(date -d '+2 days' +%Y-%m-%d)&adultNum=2&hits=6&page=1&sort=-reviewAverage&keyword=%E5%A4%A7%E9%98%AA&responseType=small" \
+            -o data/rakuten/hotels-osaka-raw.json
+
+          # jq でデータを整形して保存
+          if command -v jq &> /dev/null; then
+            jq '{
+              updated_at: now | todate,
+              hotels: [.hotels[]?.hotel[0].hotelBasicInfo | select(. != null) | {
+                hotelNo: .hotelNo,
+                hotelName: .hotelName,
+                hotelImageUrl: (.hotelImageUrl // ""),
+                hotelInformationUrl: .hotelInformationUrl,
+                reviewAverage: (.reviewAverage // 0),
+                reviewCount: (.reviewCount // 0),
+                hotelMinCharge: (.hotelMinCharge // 0),
+                address: ((.address1 // "") + (.address2 // ""))
+              }]
+            }' data/rakuten/hotels-tokyo-raw.json > data/rakuten/hotels-tokyo.json 2>/dev/null || echo '{"updated_at":"","hotels":[]}' > data/rakuten/hotels-tokyo.json
+
+            jq '{
+              updated_at: now | todate,
+              hotels: [.hotels[]?.hotel[0].hotelBasicInfo | select(. != null) | {
+                hotelNo: .hotelNo,
+                hotelName: .hotelName,
+                hotelImageUrl: (.hotelImageUrl // ""),
+                hotelInformationUrl: .hotelInformationUrl,
+                reviewAverage: (.reviewAverage // 0),
+                reviewCount: (.reviewCount // 0),
+                hotelMinCharge: (.hotelMinCharge // 0),
+                address: ((.address1 // "") + (.address2 // ""))
+              }]
+            }' data/rakuten/hotels-osaka-raw.json > data/rakuten/hotels-osaka.json 2>/dev/null || echo '{"updated_at":"","hotels":[]}' > data/rakuten/hotels-osaka.json
+          else
+            cp data/rakuten/hotels-tokyo-raw.json data/rakuten/hotels-tokyo.json
+            cp data/rakuten/hotels-osaka-raw.json data/rakuten/hotels-osaka.json
+          fi
+
+          # 生データを削除
+          rm -f data/rakuten/hotels-tokyo-raw.json data/rakuten/hotels-osaka-raw.json
+
+      - name: Fetch Skyscanner indicative flight prices
+        env:
+          SKYSCANNER_API_KEY: ${{ secrets.SKYSCANNER_API_KEY }}
+        run: |
+          mkdir -p data/prices
+
+          # Skyscanner API で東京発の主要ルート最安値を取得
+          curl -s -X POST "https://partners.api.skyscanner.net/apiservices/v3/flights/indicative/search" \
+            -H "x-api-key: ${SKYSCANNER_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "query": {
+                "currency": "JPY",
+                "locale": "ja-JP",
+                "market": "JP",
+                "dateTimeGroupingType": "DATE_TIME_GROUPING_TYPE_BY_MONTH",
+                "queryLegs": [
+                  {
+                    "originPlace": {"queryPlace": {"iata": "TYO"}},
+                    "destinationPlace": {"queryPlace": {"iata": "anywhere"}},
+                    "anytime": true
+                  }
+                ]
+              }
+            }' \
+            -o data/prices/skyscanner-tyo-all.json 2>/dev/null || echo '{}' > data/prices/skyscanner-tyo-all.json
+
+      - name: Build Hugo site
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "latest"
+          extended: true
+
+      - name: Build
+        run: hugo --minify
+
+      - name: Commit updated price data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/prices/ data/rakuten/
+          git diff --staged --quiet || git commit -m "chore: update travel prices and hotel deals $(date +%Y-%m-%d)"
+          git push
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public

@@ -1,0 +1,52 @@
+{{ define "main" }}
+<div class="container page-container">
+  <div class="content-layout">
+    <div class="main-content">
+      <header class="section-header">
+        <h1>{{ .Title }}</h1>
+        {{ with .Description }}<p class="section-lead">{{ . }}</p>{{ end }}
+        {{ with .Content }}<div class="section-intro">{{ . }}</div>{{ end }}
+      </header>
+
+      {{ with .Params.top_affiliate }}
+      <div class="affiliate-banner section-banner">
+        <a href="{{ .url }}" target="_blank" rel="nofollow noopener">
+          <div class="banner-content">
+            <span class="banner-icon">{{ .icon }}</span>
+            <div>
+              <strong>{{ .title }}</strong>
+              <p>{{ .description }}</p>
+            </div>
+            <span class="banner-cta">今すぐ検索 →</span>
+          </div>
+        </a>
+      </div>
+      {{ end }}
+
+      <div class="article-grid">
+        {{ range .Pages }}
+        <article class="article-card">
+          <a href="{{ .RelPermalink }}">
+            {{ with .Params.thumbnail }}
+            <div class="card-image" style="background-color: {{ . }}"></div>
+            {{ end }}
+            <div class="card-body">
+              {{ with .Params.category }}
+              <span class="category-badge category-{{ . | lower }}">{{ . }}</span>
+              {{ end }}
+              <h2 class="card-title">{{ .Title }}</h2>
+              {{ with .Description }}<p class="card-excerpt">{{ . }}</p>{{ end }}
+              <div class="card-meta">
+                <time>{{ .Date.Format "2006年01月02日" }}</time>
+                {{ with .Params.price_from }}<span class="price-from">最安 ¥{{ . }}</span>{{ end }}
+              </div>
+            </div>
+          </a>
+        </article>
+        {{ end }}
+      </div>
+    </div>
+    {{ partial "affiliate-sidebar.html" . }}
+  </div>
+</div>
+{{ end }}

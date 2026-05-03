@@ -1,0 +1,31 @@
+{{/* Skyscanner 埋め込み検索ウィジェット */}}
+<section class="skyscanner-section">
+  <div class="container">
+    <h2 class="section-title">✈ Skyscannerで航空券を比較</h2>
+    <p class="section-subtitle">1,000以上の航空会社をリアルタイム比較。最安値を見つけよう。</p>
+    <div class="skyscanner-widget-wrap">
+      <script src="https://widgets.skyscanner.net/widget-server/js/loader.js" async defer></script>
+      <div data-skyscanner-widget="SearchWidget"
+           data-locale="ja-JP"
+           data-market="JP"
+           data-currency="JPY"
+           data-origin-name="東京"
+           data-origin-id="TYOA">
+      </div>
+    </div>
+    <div class="skyscanner-links">
+      <a href="https://www.skyscanner.jp/transport/flights/tyoa/?adultsv2=1&cabinclass=economy&ref=home"
+         target="_blank" rel="nofollow noopener" class="skyscanner-deep-link">
+        ✈ 東京発 最安値フライト
+      </a>
+      <a href="https://www.skyscanner.jp/transport/flights/anywhere/?adultsv2=1&cabinclass=economy&ref=home"
+         target="_blank" rel="nofollow noopener" class="skyscanner-deep-link">
+        🌏 どこでもいい（最安値の行先）
+      </a>
+      <a href="https://www.skyscanner.jp/flights-from/jp/ja/"
+         target="_blank" rel="nofollow noopener" class="skyscanner-deep-link">
+        📅 最安値カレンダー
+      </a>
+    </div>
+  </div>
+</section>

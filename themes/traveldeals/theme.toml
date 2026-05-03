@@ -1,0 +1,6 @@
+name = "TravelDeals"
+license = "MIT"
+licenselink = ""
+description = "旅行お得情報サイト向けHugoテーマ"
+homepage = ""
+min_version = "0.100.0"

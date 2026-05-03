@@ -1,0 +1,60 @@
+{{ define "main" }}
+<div class="container page-container">
+  <div class="content-layout">
+    <article class="main-content">
+      <header class="article-header">
+        <div class="article-meta">
+          {{ with .Params.category }}
+          <span class="category-badge category-{{ . | lower }}">{{ . }}</span>
+          {{ end }}
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006年01月02日" }}</time>
+          {{ with .Params.updated }}
+          <span class="updated">更新: {{ . }}</span>
+          {{ end }}
+        </div>
+        <h1 class="article-title">{{ .Title }}</h1>
+        {{ with .Description }}<p class="article-lead">{{ . }}</p>{{ end }}
+      </header>
+
+      {{ with .Params.affiliate_banner }}
+      <div class="affiliate-banner top-banner">
+        <a href="{{ .url }}" target="_blank" rel="nofollow noopener">
+          <div class="banner-content">
+            <span class="banner-icon">{{ .icon }}</span>
+            <div>
+              <strong>{{ .title }}</strong>
+              <p>{{ .description }}</p>
+            </div>
+            <span class="banner-cta">{{ .cta }} →</span>
+          </div>
+        </a>
+      </div>
+      {{ end }}
+
+      <div class="article-body">
+        {{ .Content }}
+      </div>
+
+      {{ with .Params.affiliate_links }}
+      <div class="affiliate-links-box">
+        <h3>🔗 関連サービス・予約リンク</h3>
+        <div class="affiliate-grid">
+          {{ range . }}
+          <a href="{{ .url }}" target="_blank" rel="nofollow noopener" class="affiliate-card">
+            <span class="affiliate-icon">{{ .icon }}</span>
+            <div class="affiliate-info">
+              <strong>{{ .name }}</strong>
+              <p>{{ .description }}</p>
+            </div>
+            <span class="affiliate-arrow">→</span>
+          </a>
+          {{ end }}
+        </div>
+      </div>
+      {{ end }}
+
+    </article>
+    {{ partial "affiliate-sidebar.html" . }}
+  </div>
+</div>
+{{ end }}

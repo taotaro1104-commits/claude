@@ -1,0 +1,115 @@
+{{/* 楽天トラベル ホテルセクション */}}
+<section class="rakuten-section">
+  <div class="container">
+    <div class="rakuten-header">
+      <h2 class="section-title">🏨 楽天トラベルで人気のホテル</h2>
+      <p class="section-subtitle">高評価ホテルをエリア別に厳選。楽天ポイントも貯まります。</p>
+      <div class="rakuten-tabs">
+        <button class="rakuten-tab-btn active" data-city="tokyo">東京</button>
+        <button class="rakuten-tab-btn" data-city="osaka">大阪</button>
+      </div>
+    </div>
+
+    {{/* 東京ホテル */}}
+    <div class="rakuten-city-panel active" id="rakuten-tokyo">
+      {{ with site.Data.rakuten }}
+      {{ with index . "hotels-tokyo" }}
+      {{ if .hotels }}
+      <div class="hotel-grid">
+        {{ range first 6 .hotels }}
+        <a href="{{ .hotelInformationUrl }}" target="_blank" rel="nofollow noopener" class="hotel-card">
+          <div class="hotel-image">
+            {{ if .hotelImageUrl }}
+            <img src="{{ .hotelImageUrl }}" alt="{{ .hotelName }}" loading="lazy">
+            {{ else }}
+            <div class="hotel-image-placeholder">🏨</div>
+            {{ end }}
+          </div>
+          <div class="hotel-body">
+            <h3 class="hotel-name">{{ .hotelName }}</h3>
+            {{ if gt .reviewAverage 0.0 }}
+            <div class="hotel-rating">
+              <span class="star-rating">{{ range seq 1 5 }}{{ if le . (int .reviewAverage) }}★{{ else }}☆{{ end }}{{ end }}</span>
+              <span class="rating-score">{{ printf "%.1f" .reviewAverage }}</span>
+              <span class="review-count">({{ .reviewCount }}件)</span>
+            </div>
+            {{ end }}
+            {{ if gt .hotelMinCharge 0 }}
+            <div class="hotel-price">
+              <span class="price-label">最安値</span>
+              <span class="price-value">¥{{ lang.FormatNumber 0 .hotelMinCharge }}〜</span>
+              <span class="price-note">/泊</span>
+            </div>
+            {{ end }}
+            <span class="hotel-cta">楽天トラベルで見る →</span>
+          </div>
+        </a>
+        {{ end }}
+      </div>
+      {{ else }}
+      {{ partial "rakuten-fallback.html" (dict "city" "東京" "keyword" "%E6%9D%B1%E4%BA%AC" "context" .) }}
+      {{ end }}
+      {{ else }}
+      {{ partial "rakuten-fallback.html" (dict "city" "東京" "keyword" "%E6%9D%B1%E4%BA%AC" "context" .) }}
+      {{ end }}
+      {{ else }}
+      {{ partial "rakuten-fallback.html" (dict "city" "東京" "keyword" "%E6%9D%B1%E4%BA%AC" "context" .) }}
+      {{ end }}
+    </div>
+
+    {{/* 大阪ホテル */}}
+    <div class="rakuten-city-panel" id="rakuten-osaka">
+      {{ with site.Data.rakuten }}
+      {{ with index . "hotels-osaka" }}
+      {{ if .hotels }}
+      <div class="hotel-grid">
+        {{ range first 6 .hotels }}
+        <a href="{{ .hotelInformationUrl }}" target="_blank" rel="nofollow noopener" class="hotel-card">
+          <div class="hotel-image">
+            {{ if .hotelImageUrl }}
+            <img src="{{ .hotelImageUrl }}" alt="{{ .hotelName }}" loading="lazy">
+            {{ else }}
+            <div class="hotel-image-placeholder">🏨</div>
+            {{ end }}
+          </div>
+          <div class="hotel-body">
+            <h3 class="hotel-name">{{ .hotelName }}</h3>
+            {{ if gt .reviewAverage 0.0 }}
+            <div class="hotel-rating">
+              <span class="star-rating">{{ range seq 1 5 }}{{ if le . (int .reviewAverage) }}★{{ else }}☆{{ end }}{{ end }}</span>
+              <span class="rating-score">{{ printf "%.1f" .reviewAverage }}</span>
+              <span class="review-count">({{ .reviewCount }}件)</span>
+            </div>
+            {{ end }}
+            {{ if gt .hotelMinCharge 0 }}
+            <div class="hotel-price">
+              <span class="price-label">最安値</span>
+              <span class="price-value">¥{{ lang.FormatNumber 0 .hotelMinCharge }}〜</span>
+              <span class="price-note">/泊</span>
+            </div>
+            {{ end }}
+            <span class="hotel-cta">楽天トラベルで見る →</span>
+          </div>
+        </a>
+        {{ end }}
+      </div>
+      {{ else }}
+      {{ partial "rakuten-fallback.html" (dict "city" "大阪" "keyword" "%E5%A4%A7%E9%98%AA" "context" .) }}
+      {{ end }}
+      {{ else }}
+      {{ partial "rakuten-fallback.html" (dict "city" "大阪" "keyword" "%E5%A4%A7%E9%98%AA" "context" .) }}
+      {{ end }}
+      {{ else }}
+      {{ partial "rakuten-fallback.html" (dict "city" "大阪" "keyword" "%E5%A4%A7%E9%98%AA" "context" .) }}
+      {{ end }}
+    </div>
+
+    <div class="rakuten-footer">
+      <a href="https://hb.afl.rakuten.co.jp/hgc/{{ site.Params.rakuten_affiliate_id }}/?pc=https%3A%2F%2Ftravel.rakuten.co.jp%2F"
+         target="_blank" rel="nofollow noopener" class="btn btn-rakuten btn-large">
+        楽天トラベルで全ホテルを見る →
+      </a>
+      <p class="rakuten-point-note">💎 楽天ポイントが貯まる・使える！SPUでさらにお得</p>
+    </div>
+  </div>
+</section>
