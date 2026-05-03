@@ -58,12 +58,12 @@ jobs:
         run: |
           mkdir -p data/rakuten
 
-          # 東京の格安ホテル（レビュー評価順）
-          curl -s "https://app.rakuten.co.jp/services/api/Travel/SimpleHotelSearch/20170426?applicationId=${RAKUTEN_APP_ID}&affiliateId=${RAKUTEN_AFFILIATE_ID}&format=json&datumType=1&checkinDate=$(date -d '+1 day' +%Y-%m-%d)&checkoutDate=$(date -d '+2 days' +%Y-%m-%d)&adultNum=2&hits=6&page=1&sort=-reviewAverage&keyword=%E6%9D%B1%E4%BA%AC&responseType=small" \
+          # 東京の人気ホテル（日付なしキーワード検索・レビュー評価順）
+          curl -s "https://app.rakuten.co.jp/services/api/Travel/SimpleHotelSearch/20170426?applicationId=${RAKUTEN_APP_ID}&affiliateId=${RAKUTEN_AFFILIATE_ID}&format=json&hits=6&page=1&sort=-reviewAverage&keyword=%E6%9D%B1%E4%BA%AC" \
             -o data/rakuten/hotels-tokyo-raw.json
 
-          # 大阪の格安ホテル（レビュー評価順）
-          curl -s "https://app.rakuten.co.jp/services/api/Travel/SimpleHotelSearch/20170426?applicationId=${RAKUTEN_APP_ID}&affiliateId=${RAKUTEN_AFFILIATE_ID}&format=json&datumType=1&checkinDate=$(date -d '+1 day' +%Y-%m-%d)&checkoutDate=$(date -d '+2 days' +%Y-%m-%d)&adultNum=2&hits=6&page=1&sort=-reviewAverage&keyword=%E5%A4%A7%E9%98%AA&responseType=small" \
+          # 大阪の人気ホテル（日付なしキーワード検索・レビュー評価順）
+          curl -s "https://app.rakuten.co.jp/services/api/Travel/SimpleHotelSearch/20170426?applicationId=${RAKUTEN_APP_ID}&affiliateId=${RAKUTEN_AFFILIATE_ID}&format=json&hits=6&page=1&sort=-reviewAverage&keyword=%E5%A4%A7%E9%98%AA" \
             -o data/rakuten/hotels-osaka-raw.json
 
           # jq でデータを整形して保存
