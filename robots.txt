@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /public/
+
+Sitemap: https://travel.matchinfo-rank.com/sitemap.xml
