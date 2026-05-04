@@ -31,6 +31,14 @@ ul { list-style: none; }
 .page-container { padding: 40px 20px; }
 .content-layout { display: grid; grid-template-columns: 1fr 320px; gap: 40px; max-width: 1200px; margin: 0 auto; }
 
+/* === Breadcrumb === */
+.breadcrumb-nav { padding: 10px 0 18px; }
+.breadcrumb-list { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; list-style: none; font-size: 0.8rem; color: var(--gray); }
+.bc-item a { color: var(--gray); text-decoration: none; }
+.bc-item a:hover { color: var(--primary); text-decoration: underline; }
+.bc-current { color: var(--dark); font-weight: 500; }
+.bc-sep { color: var(--gray-light); font-size: 0.9rem; }
+
 /* === Header === */
 .site-header {
   background: var(--white);

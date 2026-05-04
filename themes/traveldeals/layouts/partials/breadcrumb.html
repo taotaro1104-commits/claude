@@ -1,0 +1,30 @@
+{{ if not .IsHome }}
+<nav aria-label="パンくずリスト" class="breadcrumb-nav">
+  <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li class="bc-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a href="{{ "/" | relURL }}" itemprop="item"><span itemprop="name">ホーム</span></a>
+      <meta itemprop="position" content="1">
+    </li>
+    {{ if and .Parent (not .Parent.IsHome) }}
+    <li class="bc-sep" aria-hidden="true">›</li>
+    <li class="bc-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a href="{{ .Parent.RelPermalink }}" itemprop="item"><span itemprop="name">{{ .Parent.Title }}</span></a>
+      <meta itemprop="position" content="2">
+    </li>
+    {{ if not .IsSection }}
+    <li class="bc-sep" aria-hidden="true">›</li>
+    <li class="bc-item bc-current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <span itemprop="name" aria-current="page">{{ .Title }}</span>
+      <meta itemprop="position" content="3">
+    </li>
+    {{ end }}
+    {{ else }}
+    <li class="bc-sep" aria-hidden="true">›</li>
+    <li class="bc-item bc-current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <span itemprop="name" aria-current="page">{{ .Title }}</span>
+      <meta itemprop="position" content="2">
+    </li>
+    {{ end }}
+  </ol>
+</nav>
+{{ end }}

@@ -1,0 +1,113 @@
+{{/* schema.html — ページ種別に応じた JSON-LD を出力（dict|jsonify 方式） */}}
+{{ $site := .Site }}
+
+{{/* ── 1. WebSite（トップページのみ） ──────────────────── */}}
+{{ if .IsHome }}
+{{ $schema := dict
+  "@context" "https://schema.org"
+  "@type"    "WebSite"
+  "name"        $site.Title
+  "url"         $site.BaseURL
+  "description" $site.Params.description
+  "inLanguage"  "ja-JP"
+  "potentialAction" (dict
+    "@type"      "SearchAction"
+    "target"     (dict "@type" "EntryPoint" "urlTemplate" (printf "%s/japan/?region={search_term_string}" ($site.BaseURL | strings.TrimRight "/")))
+    "query-input" "required name=search_term_string"
+  )
+}}
+<script type="application/ld+json">{{ $schema | jsonify | safeJS }}</script>
+{{ end }}
+
+{{/* ── 2. BreadcrumbList（トップ以外の全ページ） ─────── */}}
+{{ if not .IsHome }}
+{{ $rawItems := slice (dict "name" "ホーム" "url" $site.BaseURL "pos" 1) }}
+{{ if and .Parent (not .Parent.IsHome) }}
+  {{ $rawItems = $rawItems | append (dict "name" .Parent.Title "url" .Parent.Permalink "pos" 2) }}
+  {{ if not .IsSection }}
+    {{ $rawItems = $rawItems | append (dict "name" .Title "url" .Permalink "pos" 3) }}
+  {{ end }}
+{{ else }}
+  {{ $rawItems = $rawItems | append (dict "name" .Title "url" .Permalink "pos" 2) }}
+{{ end }}
+{{ $listElems := slice }}
+{{ range $rawItems }}
+  {{ $listElems = $listElems | append (dict "@type" "ListItem" "position" .pos "name" .name "item" .url) }}
+{{ end }}
+{{ $bcSchema := dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $listElems }}
+<script type="application/ld+json">{{ $bcSchema | jsonify | safeJS }}</script>
+{{ end }}
+
+{{/* ── 3. TouristDestination + Article（都道府県個別ページ） */}}
+{{ if and (eq .Section "japan") (not .IsSection) }}
+{{ $p := .Params }}
+{{ $attractions := slice }}
+{{ range $p.spots }}
+  {{ $attractions = $attractions | append (dict "@type" "TouristAttraction" "name" .) }}
+{{ end }}
+{{ $tourist := dict
+  "@context"         "https://schema.org"
+  "@type"            "TouristDestination"
+  "name"             $p.prefecture
+  "description"      .Description
+  "url"              .Permalink
+  "inLanguage"       "ja-JP"
+  "touristType"      $p.themes
+  "includesAttraction" $attractions
+  "containedInPlace" (dict "@type" "Country" "name" "日本")
+  "image"            ($p.image_url | default "")
+  "hasMap"           .Permalink
+}}
+<script type="application/ld+json">{{ $tourist | jsonify | safeJS }}</script>
+
+{{ $article := dict
+  "@context"      "https://schema.org"
+  "@type"         "Article"
+  "headline"      .Title
+  "description"   .Description
+  "url"           .Permalink
+  "image"         ($p.image_url | default "")
+  "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+  "dateModified"  (.Date.Format "2006-01-02T15:04:05Z07:00")
+  "inLanguage"    "ja-JP"
+  "author"        (dict "@type" "Organization" "name" $site.Params.author "url" $site.BaseURL)
+  "publisher"     (dict "@type" "Organization" "name" $site.Title "url" $site.BaseURL)
+  "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+}}
+<script type="application/ld+json">{{ $article | jsonify | safeJS }}</script>
+{{ end }}
+
+{{/* ── 4. Article（通常の記事ページ） ──────────────────── */}}
+{{ if and (not .IsHome) (not .IsSection) (ne .Section "japan") }}
+{{ $article := dict
+  "@context"      "https://schema.org"
+  "@type"         "Article"
+  "headline"      .Title
+  "description"   .Description
+  "url"           .Permalink
+  "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+  "dateModified"  (.Date.Format "2006-01-02T15:04:05Z07:00")
+  "inLanguage"    "ja-JP"
+  "author"        (dict "@type" "Organization" "name" $site.Params.author "url" $site.BaseURL)
+  "publisher"     (dict "@type" "Organization" "name" $site.Title "url" $site.BaseURL)
+  "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+}}
+{{ with .Params.image_url }}
+  {{ $article = merge $article (dict "image" .) }}
+{{ end }}
+<script type="application/ld+json">{{ $article | jsonify | safeJS }}</script>
+{{ end }}
+
+{{/* ── 5. CollectionPage（セクション一覧ページ） ─────── */}}
+{{ if and .IsSection (not .IsHome) }}
+{{ $col := dict
+  "@context"   "https://schema.org"
+  "@type"      "CollectionPage"
+  "name"       .Title
+  "description" .Description
+  "url"        .Permalink
+  "inLanguage" "ja-JP"
+  "publisher"  (dict "@type" "Organization" "name" $site.Title "url" $site.BaseURL)
+}}
+<script type="application/ld+json">{{ $col | jsonify | safeJS }}</script>
+{{ end }}

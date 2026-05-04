@@ -33,6 +33,11 @@ menu:
       url: "/tips/"
       weight: 50
 
+sitemap:
+  changeFreq: weekly
+  priority: 0.7
+  filename: sitemap.xml
+
 taxonomies:
   category: "categories"
   tag: "tags"
