@@ -264,6 +264,35 @@ ul { list-style: none; }
 /* === Travelpayouts Widget === */
 .travelpayouts-widget { max-width: 800px; margin: 0 auto; }
 
+/* === Home Japan Section === */
+.home-japan-section { background: #f0fdf4; padding: 60px 0; }
+.home-section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.see-all-link { font-size: 0.9rem; font-weight: 600; color: var(--secondary); flex-shrink: 0; }
+.see-all-link:hover { text-decoration: underline; }
+.home-japan-lead { color: var(--gray); margin-bottom: 32px; font-size: 0.95rem; }
+.home-japan-regions { display: flex; flex-direction: column; gap: 10px; }
+.home-region-row { display: flex; align-items: flex-start; gap: 16px; }
+.home-region-label {
+  flex-shrink: 0; width: 62px; text-align: center;
+  background: var(--secondary); color: white;
+  padding: 5px 0; border-radius: var(--radius-sm);
+  font-size: 0.8rem; font-weight: 700; margin-top: 2px;
+}
+.home-pref-links { display: flex; flex-wrap: wrap; gap: 7px; }
+.home-pref-link {
+  padding: 5px 14px; border-radius: 50px;
+  background: white; border: 1.5px solid #bbf7d0;
+  color: var(--dark); font-size: 0.85rem; font-weight: 500;
+  transition: all 0.2s;
+}
+.home-pref-link:hover {
+  background: var(--secondary); color: white;
+  border-color: var(--secondary); text-decoration: none;
+}
+
 /* === Responsive === */
 @media (max-width: 1100px) {
   .category-grid { grid-template-columns: repeat(3, 1fr); }
@@ -279,6 +308,9 @@ ul { list-style: none; }
 }
 
 @media (max-width: 640px) {
+  .home-section-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .home-region-row { flex-wrap: wrap; }
+  .home-region-label { width: auto; padding: 4px 12px; }
   .hero-title { font-size: 1.8rem; }
   .hero-subtitle { font-size: 1rem; }
   .category-grid { grid-template-columns: repeat(2, 1fr); }

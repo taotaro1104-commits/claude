@@ -110,6 +110,34 @@
   </div>
 </section>
 
+{{/* 日本国内観光コース */}}
+<section class="home-japan-section">
+  <div class="container">
+    <div class="home-section-header">
+      <h2 class="section-title" style="margin-bottom:0;text-align:left">🗾 日本の観光コース</h2>
+      <a href="{{ "/japan/" | relURL }}" class="see-all-link">47都道府県をすべて見る →</a>
+    </div>
+    <p class="home-japan-lead">全国47都道府県の観光モデルコース10選。テーマ・季節・日数で選べます。</p>
+    {{ $japanPages := where .Site.RegularPages "Section" "japan" }}
+    <div class="home-japan-regions">
+      {{ range slice "北海道" "東北" "関東" "中部" "近畿" "中国" "四国" "九州" "沖縄" }}
+        {{ $region := . }}
+        {{ $prefs := where $japanPages ".Params.region" $region }}
+        {{ if $prefs }}
+        <div class="home-region-row">
+          <span class="home-region-label">{{ $region }}</span>
+          <div class="home-pref-links">
+            {{ range $prefs }}
+            <a href="{{ .RelPermalink }}" class="home-pref-link">{{ .Params.prefecture }}</a>
+            {{ end }}
+          </div>
+        </div>
+        {{ end }}
+      {{ end }}
+    </div>
+  </div>
+</section>
+
 {{/* Skyscanner 埋め込みウィジェット */}}
 {{ partial "skyscanner-widget.html" . }}
 
